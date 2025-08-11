@@ -120,8 +120,24 @@ jobs:
 
       - name: Ensure RESET_COMMIT_SHA secret is set
         run: |
-          if [ -z "${{ secrets.RESET_COMMIT_SHA }}" ]; then
-            echo "❌ The secret RESET_COMMIT_SHA is not set in your repository."
+          # Find commits containing the specific branch references
+          sha1=$(git log origin/main --grep="from aemysites/issue-1" -n 1 --pretty=format:%H || true)
+          sha2=$(git log origin/main --grep="from aemysites/issue-2" -n 1 --pretty=format:%H || true)
+          
+          # Get timestamps for comparison
+          ts1=0
+          if [ -n "$sha1" ]; then
+            ts1=$(git show -s --format=%ct "$sha1")
+          fi
+          
+          ts2=0
+          if [ -n "$sha2" ]; then
+            ts2=$(git show -s --format=%ct "$sha2")
+          fi
+          
+          # Check if we found any commits
+          if [ -z "$sha1" ] && [ -z "$sha2" ]; then
+            echo "❌ No commits found containing 'from aemysites/issue-1' or 'from aemysites/issue-2'"
             exit 1
           fi
 
