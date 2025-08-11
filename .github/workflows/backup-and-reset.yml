@@ -118,47 +118,17 @@ jobs:
           git push origin $BRANCH_NAME
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
-      - name: Determine reset commit
-        id: determine_reset_commit
+      - name: Ensure RESET_COMMIT_SHA secret is set
         run: |
-          # Find commits containing the specific branch references
-          sha1=$(git log origin/main --grep="from aemysites/issue-1" -n 1 --pretty=format:%H || true)
-          sha2=$(git log origin/main --grep="from aemysites/issue-2" -n 1 --pretty=format:%H || true)
-          
-          # Get timestamps for comparison
-          ts1=0
-          if [ -n "$sha1" ]; then
-            ts1=$(git show -s --format=%ct "$sha1")
-          fi
-          
-          ts2=0
-          if [ -n "$sha2" ]; then
-            ts2=$(git show -s --format=%ct "$sha2")
-          fi
-          
-          # Check if we found any commits
-          if [ -z "$sha1" ] && [ -z "$sha2" ]; then
-            echo "❌ No commits found containing 'from aemysites/issue-1' or 'from aemysites/issue-2'"
+          if [ -z "${{ secrets.RESET_COMMIT_SHA }}" ]; then
+            echo "❌ The secret RESET_COMMIT_SHA is not set in your repository."
             exit 1
           fi
-          
-          # Determine which is newer
-          if [ "$ts1" -ge "$ts2" ]; then
-            target="$sha1"
-            issue_num="issue-1"
-          else
-            target="$sha2"
-            issue_num="issue-2"
-          fi
-          
-          echo "Reset target: $target ($issue_num)"
-          echo "Commit message: $(git log -1 --pretty=%s "$target")"
-          echo "reset_commit_sha=$target" >> $GITHUB_OUTPUT
 
-      - name: Reset main to determined commit
+      - name: Reset main to specified commit
         run: |
           git checkout main
-          git reset --hard ${{ steps.determine_reset_commit.outputs.reset_commit_sha }}
+          git reset --hard ${{ secrets.RESET_COMMIT_SHA }}
           git push origin main --force
 
       - name: Move SharePoint content to backup folder
@@ -169,17 +139,3 @@ jobs:
           host: ${{ fromJSON(steps.mountpoint_data.outputs.data).host }}
           site_path: ${{ fromJSON(steps.mountpoint_data.outputs.data).site }}
           folder_path: ${{ fromJSON(steps.mountpoint_data.outputs.data).path }}
-
-      - name: Create AEMY Installation issue
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.WORKFLOW_PAT }}
-          script: |
-            const { data: issue } = await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: 'AEMY Installation',
-              body: 'Setup the workflows',
-              labels: ['aemy-go', 'aemy-help', 'aemy-merge']
-            });
-            console.log(`Created issue #${issue.number}: ${issue.html_url}`);
