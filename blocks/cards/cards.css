@@ -25,3 +25,105 @@
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
+
+
+.cards.cards4 {
+  background: #fff;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+/* Card row: align cards side by side, centered, with relaxed spacing and wider cards */
+.cards.cards4 > ul {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Individual card: fixed width, relaxed, column layout for content */
+.cards.cards4 > ul > li {
+  background: #fff;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 260px;
+  width: 100%;
+  box-sizing: border-box;
+  flex: 0 0 260px;
+}
+
+/* Card image: always square, fills card width */
+.cards.cards4 .cards-card-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: block;
+}
+
+.cards.cards4 .cards-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card body spacing and layout */
+.cards.cards4 .cards-card-body {
+  padding: 12px 0 8px;
+  margin: 0;
+  display: block;
+}
+
+/* Title styling */
+.cards.cards4 .cards-card-body strong {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #15151e;
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+/* Description styling and truncation */
+.cards.cards4 .cards-card-body p {
+  margin: 0;
+  color: #8b8b94;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ensure all card content is left-aligned */
+.cards.cards4 .cards-card-body,
+.cards.cards4 .cards-card-body strong,
+.cards.cards4 .cards-card-body p {
+  text-align: left;
+}
+
+/* Responsive stacking for small screens */
+@media (width <= 900px) {
+  .cards.cards4 > ul {
+    flex-direction: column;
+    gap: 16px;
+    max-width: 100%;
+  }
+
+  .cards.cards4 > ul > li {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
