@@ -1,0 +1,24 @@
+{
+  "originUrl": "https://wknd.site",
+  "aborted": false,
+  "urls": [
+    {
+      "url": "https://wknd.site/us/en.html",
+      "source": "MANUAL",
+      "targetPath": "/us/en",
+      "id": "c76865e01a59d1b318b0ceda7c573c315b7d1195"
+    },
+    {
+      "url": "https://wknd.site/us/en/magazine.html",
+      "source": "MANUAL",
+      "targetPath": "/us/en/magazine",
+      "id": "17b58a0bdc3faf7fb00838344d9a62d8a9d72190"
+    }
+  ],
+  "crawlOptions": {
+    "strategy": "manual",
+    "strategiesAttempted": [
+      "MANUAL"
+    ]
+  }
+}
