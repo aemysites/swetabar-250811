@@ -112,11 +112,13 @@ jobs:
           # Get current date and time in YYYY-MM-DD-HH-MM format
           TIMESTAMP=$(date +%Y-%m-%d-%H-%M)
           # Use provided branch name or default to backup-{timestamp}
-          BRANCH_NAME="${INPUT_BACKUP_BRANCH_NAME:-backup-$TIMESTAMP}"
+          BRANCH_NAME="${BACKUP_BRANCH_NAME:-backup-$TIMESTAMP}"
           # Create and push the backup branch
           git checkout -b $BRANCH_NAME
           git push origin $BRANCH_NAME
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        env:
+          BACKUP_BRANCH_NAME: ${{ inputs.backup_branch_name }}
 
       - name: Determine reset commit
         id: determine_reset_commit
