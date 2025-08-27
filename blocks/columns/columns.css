@@ -31,3 +31,145 @@
     order: unset;
   }
 }
+
+
+/* Restrict main block width and center in viewport for better balance */
+.columns {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 36px; /* reduce vertical gap between rows for compact feel */
+  background: #fff;
+}
+
+/* Each row: horizontal flex, columns side by side, equal widths */
+.columns > div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 32px; /* slightly reduce horizontal gap for better proportions */
+}
+
+/* Each column in a row: columns-img-col and text columns get same base width */
+.columns > div > div {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* Add horizontal padding to text columns for visual gutter;
+   Only add to text columns, not image columns */
+.columns > div > div:not(.columns-img-col) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px; /* tighter vertical stacking in text column */
+  font-size: 16px;
+  color: #222;
+  font-family: var(--body-font-family, 'Inter', Arial, sans-serif);
+  padding-left: 32px;
+  padding-right: 8px;
+}
+
+/* Remove text padding from image columns */
+.columns > div > .columns-img-col {
+  padding: 0;
+}
+
+/* Remove top margin from every element in text column for tight stack */
+.columns > div > div:not(.columns-img-col) > * {
+  margin-top: 0;
+}
+
+/* List spacing: tighter, left-aligned, consistent font */
+.columns > div > div:not(.columns-img-col) ul {
+  margin: 0 0 0 18px;
+  padding: 0;
+  font-size: 16px;
+  color: #222;
+}
+
+.columns > div > div:not(.columns-img-col) li {
+  margin-bottom: 3px;
+}
+
+/* Ensure right-column text in bottom row aligns with its column's left edge */
+.columns > div:last-child > div:not(.columns-img-col) {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+/* Button container: minimal vertical separation */
+.columns .button-container {
+  margin-top: 4px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+/* Live button (primary): pill, blue, left-aligned */
+.columns .button:not(.secondary) {
+  background: #4f56ff;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 26px;
+  font-size: 16px;
+  font-family: var(--body-font-family, 'Inter', Arial, sans-serif);
+  font-weight: 500;
+  box-shadow: none;
+  margin: 0;
+}
+
+/* Preview button (secondary): pill, outline, left-aligned */
+.columns .button.secondary {
+  background: #fff;
+  color: #222;
+  border: 1.5px solid #222;
+  border-radius: 999px;
+  padding: 9px 26px;
+  font-size: 16px;
+  font-family: var(--body-font-family, 'Inter', Arial, sans-serif);
+  font-weight: 500;
+  box-shadow: none;
+  margin: 0;
+}
+
+/* Image column: image fills column width, no overflow */
+.columns .columns-img-col,
+.columns .columns-img-col picture,
+.columns .columns-img-col img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 0;
+  margin: 0;
+}
+
+/* Consistent left alignment for all text elements */
+.columns p,
+.columns ul {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Responsive: stack columns vertically on small screens */
+@media (max-width: 900px) {
+  .columns {
+    gap: 24px;
+    max-width: 100%;
+  }
+  .columns > div {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .columns > div > div,
+  .columns > div > .columns-img-col {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
